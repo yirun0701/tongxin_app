@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>同鑫资讯</title>
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+<script src="jquery-2.0.3.min.js"></script>
+<link rel="stylesheet" href="jquery.mobile-1.3.2.min.css" type="text/css" charset="utf-8" />
+<script src="jquery.mobile-1.3.2.min.js"></script>
+<script src="socket.io.js"></script>
+<script type="text/javascript" charset="utf-8" src="PushNotification.js"></script>
+<script type="text/javascript" charset="utf-8" src="login.js"></script>
+</head>
+
+<body onload="init()">
+
+<div id="loginPage" data-role="page">
+
+    <div data-role="header" data-theme="b">
+        <h1>同鑫资讯</h1>
+    </div>
+
+    <div data-role="content">    
+
+        <form id="loginForm">
+        <div data-role="fieldcontain" class="ui-hide-label">
+            <input type="text" name="username" id="username" value="" placeholder="用户名" />
+        </div>
+
+        <div data-role="fieldcontain" class="ui-hide-label">
+            <input type="password" name="password" id="password" value="" placeholder="密码" />
+        </div>
+
+        <input type="button" value="登陆" id="submitButton" onclick="handleLogin()">
+        </form>
+        
+    </div>
+
+    <div data-role="footer" data-theme="b">
+        <h4>&copy; 上海同鑫</h4>
+    </div>
+
+</div>
+
+</body>
+</html>

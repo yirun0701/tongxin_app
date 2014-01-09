@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<title>信息列表</title>
+
+<meta http-equiv=”Content-Type” content=”text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="jquery.mobile-1.3.2.min.css" type="text/css" charset="utf-8" />
+<script src="jquery-2.0.3.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+<script src="jquery.mobile-1.3.2.min.js"></script>
+<script src="websocket.js"></script>
+<script src="socket.io.js"></script>
+<script type="text/javascript" charset="utf-8" src="main.js"></script>
+<script type="text/javascript" charset="utf-8" src="statusbarnotification.js"></script>
+    <style>
+        .ui-header .ui-title, /* 页眉 */
+        .ui-footer .ui-title, /* 页脚 */
+        .ui-btn-inner, /* 按钮 */
+        .ui-li-heading, /* 列表标题*/
+        .ui-li .ui-btn-text a.ui-link-inherit, /* 列表 */
+        .ui-li-desc /* 列表详细 */ {
+	        overflow: visible;
+	        white-space: normal;
+	        word-wrap: break-word;
+	        word-break: break-all;
+        }
+         .ui-li-heading {
+            margin-top: 1px;
+        }
+
+        .ui-li-desc {
+            margin-bottom: 0px;
+        }
+
+        .ui-li, .ui-li-static, .ui-btn-up-c {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            font-family:微软雅黑;
+        }
+    </style>
+    <script>      
+        $(function () {
+            if (isNotNull(window.localStorage["txlocalMsg"])) {
+                //有本地存储,进行解析,存入数组
+                var strStorage = window.localStorage["txlocalMsg"];
+                var aStrStorage = strStorage.split("||");
+
+                for (var i = 0; i < aStrStorage.length; i++) {
+                    var tempStr = aStrStorage[i];
+                    var aTemp = tempStr.split(",");
+                    aStorage.push(aTemp[0]);
+                    aCount[aTemp[0]] = aTemp[1];
+                }
+
+                var firstDiv = null;
+
+                for (var i = 0; i < aStorage.length; i++) {
+
+                    var div = createCollapsible(aStorage[i]);
+                    $("#content").append(div);
+                    div.collapsible();
+                    if (i == 0) {
+                        firstDiv = div;
+                    }
+                    //div.trigger("expand");
+                    //createAddCordion(aStorage[i])
+                }
+                if (firstDiv != null) {
+                    firstDiv.trigger("expand");
+                    createAddCordion(aStorage[0])
+                }
+
+            }
+            
+            document.addEventListener("deviceready", onDeviceReady, true);
+        });
+        
+
+        
+    </script>
+</head>
+<body>
+	<div data-role="page" id="page1">
+	    <div data-role="content">
+	        <div data-role="collapsible-set" id="content" data-inset="false">
+	        </div>
+	    </div>
+	</div>
+</body>
+
+<script>
+$(function(){
+	
+});
+
+function onDeviceReady()
+{
+	document.addEventListener("offline", offlineCallBack, false);
+    //var local = window.localStorage["localMsg"];
+    //if(local)
+    //{
+	    //hisLocalMsg = local.split("|,|");
+	    //for(var i = 0;i < hisLocalMsg.length;i++)
+	    //{
+	    	//var msg = hisLocalMsg[i].split("||");
+	    	//var li = getNewHTML(msg[0], msg[1], msg[2]);
+	    	//$("#msg").prepend(li);
+	    //}
+    //}
+}
+
+function offlineCallBack(){
+	navigator.app.exitApp();
+}
+</script>
+</html>
+
+
