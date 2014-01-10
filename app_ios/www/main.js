@@ -39,14 +39,19 @@ socket.on('msg_in', function(msg){
 
 function onPause()
 {
-    socket.emit('disconnect me', {'disconnect': "disconnect"});
-    //socket.socket.disconnect();
+    //socket.emit('disconnect me', {'disconnect': "disconnect"});
+    socket.socket.disconnect();
 }
 
 function onResume() {
     setTimeout(function(){
-               socket.socket.reconnect();
-               });
+        if(socket && socket.socket){
+            socket.socket.reconnect();
+        }
+        else{
+            socket = io.connect('http://180.169.11.50:3000');
+        }
+    }, 1000);
 }
 
 function getQueryStringByName(name){
