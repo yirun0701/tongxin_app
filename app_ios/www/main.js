@@ -20,30 +20,33 @@ function isNotNull(value) {
     }
 }
 
-//var socket = io.connect('http://180.169.11.50:3000');
-//
-//socket.on('connected', function(){
-//    var phoneName = getQueryStringByName("phoneName");
-//    var iosToken = window.localStorage["iosToken"];
-//    var platform = device.platform;
-//          setTimeout(function() {
-//                socket.emit('username', {'phoneNum': phoneName, 'iosToken': iosToken, 'platform': platform});
-//                     });
-//        });
+var socket = io.connect('http://180.169.11.50:3000');
+
+socket.on('connected', function(){
+    var phoneName = getQueryStringByName("phoneName");
+    var iosToken = window.localStorage["iosToken"];
+    var platform = device.platform;
+          setTimeout(function() {
+                socket.emit('username', {'phoneNum': phoneName, 'iosToken': iosToken, 'platform': platform});
+                     });
+        });
 
 var localMsg=[];
-//socket.on('msg_in', function(msg){
-//    newMsg(msg.title, msg.content, msg.timestamp);
-//          navigator.notification.beep(1);
-//});
+socket.on('msg_in', function(msg){
+    newMsg(msg.title, msg.content, msg.timestamp);
+          navigator.notification.beep(1);
+});
 
 function onPause()
 {
-    //socket.emit('disconnect me', {'disconnect': "disconnect"});
+    socket.emit('disconnect me', {'disconnect': "disconnect"});
+    //socket.socket.disconnect();
 }
 
 function onResume() {
-    //socket.socket.reconnect();
+    setTimeout(function(){
+               socket.socket.reconnect();
+               });
 }
 
 function getQueryStringByName(name){
