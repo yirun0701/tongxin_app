@@ -62,6 +62,9 @@ function getQueryStringByName(name){
      return result[1];
 }
 
+Array.prototype.insertAt = function (index, obj) {
+    this.splice(index, 0, obj);
+}
 
 function newMsg(header, content, aside) {
     //getToday();
@@ -85,12 +88,41 @@ function newMsg(header, content, aside) {
     }
     if (index == null) {
         //没有今天的消息
-        alocalStorage.unshift(today + ",1");
+        //alocalStorage.unshift(today + ",1");
+        //window.localStorage["txlocalMsg"] = alocalStorage.join("||");
+        //index = 1;
+
+        //var div = createCollapsible(today);
+        //div.prependTo($("#content"));
+        //div.collapsible();
+        //div.trigger("expand");
+
+        var aPos = alocalStorage.length;
+
+        var afterDay = null;
+
+        for (var i = alocalStorage.length - 1; i >= 0; i--) {
+            var localStorageItem = alocalStorage[i];
+            var aItem = localStorageItem.split(",");
+            var date = aItem[0];
+            if (date > today) {
+                afterDay = date;
+                break;
+            }
+            aPos--;
+        }
+
+        alocalStorage.insertAt(aPos, today + ",1");
         window.localStorage["txlocalMsg"] = alocalStorage.join("||");
         index = 1;
 
         var div = createCollapsible(today);
-        div.prependTo($("#content"));
+        if (aPos == 0) {
+            div.prependTo($("#content"));
+        }
+        else {
+            $("#coll" + afterDay).after(div);
+        }
         div.collapsible();
         div.trigger("expand");
     }
@@ -103,8 +135,20 @@ function newMsg(header, content, aside) {
 
     var localDateMsg = window.localStorage["txlocalDateMsg" + today];
     if (isNotNull(localDateMsg)) {
+        //var aLocalDateMsg = localDateMsg.split("||");
+        //aLocalDateMsg.unshift(today + "-" + index);
+        //window.localStorage["txlocalDateMsg" + today] = aLocalDateMsg.join("||");
+
         var aLocalDateMsg = localDateMsg.split("||");
-        aLocalDateMsg.unshift(today + "-" + index);
+        var bPos = aLocalDateMsg.length;
+        for (var i = aLocalDateMsg.length - 1; i >= 0; i--) {
+            var msgArr = window.localStorage["txMsg" + aLocalDateMsg[i]].split("||");
+            if (msgArr[3] > aside) {
+                break;
+            }
+            bPos--;
+        }
+        aLocalDateMsg.insertAt(bPos, today + "-" + index);
         window.localStorage["txlocalDateMsg" + today] = aLocalDateMsg.join("||");
     }
     else {
@@ -129,6 +173,9 @@ function createAddCordion(date) {
     var p = $("#coll" + date).find(".myView");
     p.append(ul);
     $(ul).listview();
+    var div = $("#coll" + date);
+
+    div.trigger("expand");
 }
 
 function createCollapsible(str) {
